@@ -3,9 +3,12 @@ on:
   push:
     branches:
       - beta1 # Change this to your default branch if different
-  pull_request:
-    branches:
-      - beta1 # Change this to your default branch if different
+    paths:
+      - 'src/main/java/App.java'
+      
+  # pull_request:
+  #   branches:
+  #     - beta1 # Change this to your default branch if different
 
 jobs:
   run_tests:

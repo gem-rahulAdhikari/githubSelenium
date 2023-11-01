@@ -111,7 +111,8 @@ public abstract class driverConfig extends WebdriverEventListener {
         //uploading bucket report link and user-updated code to db
         System.out.println("in mongo upload function");
         String userId = App.reportName.split("_")[1];
-        String url = "http://g-codeeditor.el.r.appspot.com/editor?name=" + userId;
+        // String url = "http://g-codeeditor.el.r.appspot.com/editor?name=" + userId;
+        String url=userId;
         String filePath = "src/main/java/App.java";
         String classContent = readClassFileAsString(filePath);
         String escapedClassContent = classContent.replace("\"", "\\\"")

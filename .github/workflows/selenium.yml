@@ -5,6 +5,8 @@ on:
       - beta # Change this to your default branch if different
     paths:
       - 'src/main/java/App.java'
+env:
+  KEY: ${{ secrets.KEY }}      
       
   # pull_request:
   #   branches:

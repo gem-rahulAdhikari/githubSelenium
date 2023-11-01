@@ -50,6 +50,10 @@ jobs:
       env:
         CHROME_BIN: /usr/bin/google-chrome
         CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
+
+    - name: Print MY_VARIABLE
+      run: |
+        echo "The value of MY_VARIABLE is $MY_VARIABLE"    
     # - name: Set up Maven
     #   run: |
     #     sudo apt-get install maven -y

@@ -33,6 +33,7 @@ driver.get("https://www.google.com/");
      }
 
      extentTest.log(Status.PASS,driver.getCurrentUrl(),captureScreenshot());
+     extentTest.log(Status.PASS,driver.getCurrentUrl(),captureScreenshot());
 
 }
 

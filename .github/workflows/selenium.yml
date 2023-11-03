@@ -26,10 +26,12 @@ jobs:
 
     - name: Set up Chrome
       run: |
+        echo "Start Set up Chrome: $(date)" >> execution_log.txt
         wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
         echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
         sudo apt-get update
         sudo apt-get install google-chrome-stable -y
+        echo "End Set up Chrome: $(date)" >> execution_log.txt
       shell: bash
 
     - name: Set up ChromeDriver
@@ -39,15 +41,29 @@ jobs:
 
     - name: Set up Maven
       run: |
+        echo "Start Set up Maven: $(date)" >> execution_log.txt
         sudo apt-get install maven -y
+        echo "End Set up Maven: $(date)" >> execution_log.txt
       shell: bash
 
     - name: Build and run Selenium tests
       run: |
+        start_time=$(date +%s)
+        echo "Start Build and run Selenium tests: $(date)" >> execution_log.txt
         mvn test -DsuiteXmlFile=testng.xml
+        end_time=$(date +%s)
+        execution_time=$((end_time - start_time))
+        echo "End Build and run Selenium tests: $(date)" >> execution_log.txt
+        echo "Execution time for Build and run Selenium tests: $execution_time seconds" >> execution_log.txt
       env:
         CHROME_BIN: /usr/bin/google-chrome
         CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
+
+    - name: Upload Execution Log
+      uses: actions/upload-artifact@v2
+      with:
+        name: execution-log
+        path: execution_log.txt  
     # - name: Set up Maven
     #   run: |
     #     sudo apt-get install maven -y

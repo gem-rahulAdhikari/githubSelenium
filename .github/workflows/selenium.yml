@@ -28,19 +28,36 @@ jobs:
       # with:
       #   java-version: 11
 
-    - name: Set up Chrome
+    - name: Download Chrome Stable Version
       run: |
-        start_time=$(date +%s)
-        echo "Start Set up Chrome: $(date)" >> execution_log.txt
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-        sudo apt-get update
-        sudo apt-get install google-chrome-stable -y
-        end_time=$(date +%s)
-        execution_time=$((end_time - start_time))
-        echo "End Set up Chrome: $(date)" >> execution_log.txt
-        echo "Execution time for Setup chrome: $execution_time seconds" >> execution_log.txt
+        # Download Chrome stable version
+        curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip
       shell: bash
+
+    - name: Unzip Chrome
+      run: |
+        unzip chrome-linux64.zip -d chrome-linux64
+        export CHROME_BIN=$(pwd)/chrome-linux64/chrome
+        echo "export CHROME_BIN=$CHROME_BIN" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Display Chrome Path
+      run: |
+        echo "Chrome binary path: $CHROME_BIN"
+      shell: bash
+    # - name: Set up Chrome
+    #   run: |
+    #     start_time=$(date +%s)
+    #     echo "Start Set up Chrome: $(date)" >> execution_log.txt
+    #     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    #     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+    #     sudo apt-get update
+    #     sudo apt-get install google-chrome-stable -y
+    #     end_time=$(date +%s)
+    #     execution_time=$((end_time - start_time))
+    #     echo "End Set up Chrome: $(date)" >> execution_log.txt
+    #     echo "Execution time for Setup chrome: $execution_time seconds" >> execution_log.txt
+    #   shell: bash
 
     - name: Set up ChromeDriver
       run: |

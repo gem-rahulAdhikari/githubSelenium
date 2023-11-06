@@ -54,9 +54,21 @@ public abstract class driverConfig extends WebdriverEventListener {
 
     @BeforeMethod
     public void setWebDriver() {
+        // Read the Chrome binary path from the environment variable
+        String chromeBinaryPath = System.getenv("CHROME_BIN");
+
+        // Load Chrome options from the properties file
+        Properties properties = new Properties();
+        try {
+            FileInputStream input = new FileInputStream("chrome_options.properties");
+            properties.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //Chromedriver setup
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
+        options.setBinary(chromeBinaryPath);
         options.addArguments("--headless");
         options.addArguments("start-maximized");
         options.addArguments("disable-infobars");

@@ -17,12 +17,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      run: |
+        start_time=$(date +%s)
+        echo "Start Checkout code: $(date)" >> execution_log.txt
+        uses: actions/checkout@v2
+        end_time=$(date +%s)
+        execution_time=$((end_time - start_time))
+        echo "End Checkout code: $(date)" >> execution_log.txt
+        echo "Execution time for Checkout Code: $execution_time seconds" >> execution_log.txt
+      # uses: actions/checkout@v2
 
     - name: Set up Java
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
+      run: |
+        start_time=$(date +%s)
+        echo "Start Set up Java: $(date)" >> execution_log.txt
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+        end_time=$(date +%s)  
+        execution_time=$((end_time - start_time))
+        echo "End Set up Java: $(date)" >> execution_log.txt
+        echo "Execution time for Set up Java: $execution_time seconds" >> execution_log.txt
+      # uses: actions/setup-java@v1
+      # with:
+      #   java-version: 11
 
     - name: Set up Chrome
       run: |

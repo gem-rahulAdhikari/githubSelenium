@@ -26,12 +26,16 @@ jobs:
 
     - name: Set up Chrome
       run: |
+        start_time=$(date +%s)
         echo "Start Set up Chrome: $(date)" >> execution_log.txt
         wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
         echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
         sudo apt-get update
         sudo apt-get install google-chrome-stable -y
+        end_time=$(date +%s)
+        execution_time=$((end_time - start_time))
         echo "End Set up Chrome: $(date)" >> execution_log.txt
+        echo "Execution time for Setup chrome: $execution_time seconds" >> execution_log.txt
       shell: bash
 
     - name: Set up ChromeDriver
@@ -41,9 +45,13 @@ jobs:
 
     - name: Set up Maven
       run: |
+        start_time=$(date +%s)
         echo "Start Set up Maven: $(date)" >> execution_log.txt
         sudo apt-get install maven -y
+        end_time=$(date +%s)
+        execution_time=$((end_time - start_time))
         echo "End Set up Maven: $(date)" >> execution_log.txt
+        echo "Execution time for Setup Maven: $execution_time seconds" >> execution_log.txt
       shell: bash
 
     - name: Build and run Selenium tests

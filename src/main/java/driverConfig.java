@@ -57,19 +57,13 @@ public abstract class driverConfig extends WebdriverEventListener {
 
     @BeforeMethod
     public void setWebDriver() {
-        // Read the Chrome binary path from the environment variable
+       // Read the Chrome binary path from the environment variable
         String chromeBinaryPath = System.getenv("CHROME_BIN");
 
-        // Load Chrome options from the properties file
-        Properties properties = new Properties();
-        try {
-            FileInputStream input = new FileInputStream("chrome_options.properties");
-            properties.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //Chromedriver setup
+        // Set up Chrome WebDriver using WebDriverManager
         WebDriverManager.chromedriver().setup();
+
+        // Create ChromeOptions and set the binary path
         ChromeOptions options = new ChromeOptions();
         options.setBinary(chromeBinaryPath);
         options.addArguments("--headless");
@@ -79,6 +73,17 @@ public abstract class driverConfig extends WebdriverEventListener {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
         options.addArguments("--remote-allow-origins=*");
+        
+        // WebDriverManager.chromedriver().setup();
+        // ChromeOptions options = new ChromeOptions();
+        // options.setBinary(chromeBinaryPath);
+        // options.addArguments("--headless");
+        // options.addArguments("start-maximized");
+        // options.addArguments("disable-infobars");
+        // options.addArguments("--disable-extensions");
+        // options.addArguments("--disable-dev-shm-usage");
+        // options.addArguments("--no-sandbox");
+        // options.addArguments("--remote-allow-origins=*");
         WebDriverListener listener = new WebdriverEventListener();
         wDriver.set(new ChromeDriver(options));
         WebDriver decorated = new EventFiringDecorator(listener).decorate(wDriver.get());

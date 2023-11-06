@@ -16,27 +16,8 @@ jobs:
   run_tests:
     runs-on: ubuntu-latest
     steps:
-    - name: Start Checkout code
-      run: |
-        echo "Start Checkout code: $(date)" >> execution_log.txt
-
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: End Checkout code
-      run: |
-        echo "End Checkout code: $(date)" >> execution_log.txt
-
-  log_execution_time:
-    runs-on: ubuntu-latest
-    needs: run_tests
-    steps:
-    - name: Log Execution Time
-      run: |
-        start_time=$(grep "Start Checkout code" execution_log.txt | tail -n 1 | cut -d ' ' -f 5)
-        end_time=$(grep "End Checkout code" execution_log.txt | tail -n 1 | cut -d ' ' -f 5)
-        execution_time=$((end_time - start_time))
-        echo "Execution time for Checkout code: $execution_time seconds" >> execution_log.txt
       # uses: actions/checkout@v2
 
     - name: Set up Java

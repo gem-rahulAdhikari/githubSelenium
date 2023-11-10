@@ -1,109 +1,29 @@
 name: Run Selenium Tests
+
 on:
   push:
     branches:
-      - beta1 # Change this to your default branch if different
-    paths:
-      - 'src/main/java/App.java'
-env:
-  KEY: ${{ secrets.KEY }}      
-      
-  # pull_request:
-  #   branches:
-  #     - beta # Change this to your default branch if different
+      - selenium_run
 
 jobs:
   run_tests:
     runs-on: ubuntu-latest
+
+    container:
+      image: selenium/standalone-chrome:latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      # uses: actions/checkout@v2
-
-    - name: Set up Java
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
-      # uses: actions/setup-java@v1
-      # with:
-      #   java-version: 11
-
-    - name: Download Chrome Stable Version
-      run: |
-        # Download Chrome stable version
-        curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip
-      shell: bash
-
-    - name: Unzip Chrome
-      run: |
-        unzip chrome-linux64.zip -d chrome-linux64
-        export CHROME_BIN=$(pwd)/chrome-linux64/chrome
-        echo "export CHROME_BIN=$CHROME_BIN" >> $GITHUB_ENV
-      shell: bash
-
-    - name: Display Chrome Path
-      run: |
-        echo "Chrome binary path: $CHROME_BIN"
-      shell: bash
-    # - name: Set up Chrome
-    #   run: |
-    #     start_time=$(date +%s)
-    #     echo "Start Set up Chrome: $(date)" >> execution_log.txt
-    #     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    #     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-    #     sudo apt-get update
-    #     sudo apt-get install google-chrome-stable -y
-    #     end_time=$(date +%s)
-    #     execution_time=$((end_time - start_time))
-    #     echo "End Set up Chrome: $(date)" >> execution_log.txt
-    #     echo "Execution time for Setup chrome: $execution_time seconds" >> execution_log.txt
-    #   shell: bash
-
-    - name: Set up ChromeDriver
-      run: |
-        # WebDriverManager handles driver setup, so you can skip this step
-      shell: bash
 
     - name: Set up Maven
-      run: |
-        start_time=$(date +%s)
-        echo "Start Set up Maven: $(date)" >> execution_log.txt
-        sudo apt-get install maven -y
-        end_time=$(date +%s)
-        execution_time=$((end_time - start_time))
-        echo "End Set up Maven: $(date)" >> execution_log.txt
-        echo "Execution time for Setup Maven: $execution_time seconds" >> execution_log.txt
-      shell: bash
+      run: mvn --version
 
     - name: Build and run Selenium tests
-      run: |
-        start_time=$(date +%s)
-        echo "Start Build and run Selenium tests: $(date)" >> execution_log.txt
-        mvn test -DsuiteXmlFile=testng.xml
-        end_time=$(date +%s)
-        execution_time=$((end_time - start_time))
-        echo "End Build and run Selenium tests: $(date)" >> execution_log.txt
-        echo "Execution time for Build and run Selenium tests: $execution_time seconds" >> execution_log.txt
-      env:
-        CHROME_BIN: /usr/bin/google-chrome
-        CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
+      run: mvn test -DsuiteXmlFile=testng.xml
 
     - name: Upload Execution Log
       uses: actions/upload-artifact@v2
       with:
         name: execution-log
-        path: execution_log.txt  
-    # - name: Set up Maven
-    #   run: |
-    #     sudo apt-get install maven -y
-    #   shell: bash
-
-    # - name: Build and run Selenium tests
-    #   run: |
-    #     mvn test 
-
-    #     # mvn clean test
-    #     # javac src/main/java/org/example/Main.java
-    #     # java -cp src/main/java org.example.Main
-
-    #   working-directory: ${{ github.workspace }}
+        path: execution_log.txt

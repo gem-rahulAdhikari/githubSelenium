@@ -3,7 +3,7 @@ name: Run Selenium Tests
 on:
   push:
     branches:
-      - beta1
+      - 1699602777
     paths:
       - 'src/main/java/App.java'
 

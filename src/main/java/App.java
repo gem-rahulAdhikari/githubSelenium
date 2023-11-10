@@ -12,7 +12,7 @@ import java.math.*;
 import java.time.*;
 
 public class App extends driverConfig {
-    static String reportName="Report_1699602777_0";
+    static String reportName="Report_1699602777_1";
 
     @Test
     public void demo() {
@@ -22,8 +22,7 @@ public class App extends driverConfig {
         searchInput.sendKeys(Keys.RETURN);
         WebElement title = driver.findElement(By.xpath("(//h3[text()='Selenium'])[1]"));
         String fetchedTitle = title.getText();
-        System.out.println(fetchedTitle + " start2");
-        if ("Selenium".equals(fetchedTitle)) {
+         if ("Selenium".equals(fetchedTitle)) {
             extentTest.log(Status.PASS, "text matched successfully.", captureScreenshot());
         } else {
             extentTest.log(Status.FAIL, "Failed to match text.", captureScreenshot());
